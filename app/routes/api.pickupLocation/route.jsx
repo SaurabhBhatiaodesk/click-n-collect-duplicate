@@ -9,7 +9,7 @@ export async function loader({ request }) {
   const auth_session = await db.session.findFirst({
     where: { shop },
   });
-
+console.log("loggggggggggggg check token" ,auth_session?.accessToken);
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("X-Shopify-Access-Token", auth_session?.accessToken);
