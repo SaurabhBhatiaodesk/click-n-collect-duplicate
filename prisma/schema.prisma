@@ -11,7 +11,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   //url      = "postgresql://postgres:admin1234@localhost:5432/clickncollect"
-  url      = "postgres://u9ntmbe708ferf:pc5516cf36ffb1ce457d95878ec4ec345498260359a49fd329c2f3870bd7c99b4@cd1goc44htrmfn.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d2cqm07aksi4k8"
+  url      = "postgres://u2htartq0urmcl:p3d27be082342ce0b10e21ad47f10714f4519ecf568ca31a57c14a8b62e67b870@c3gtj1dt5vh48j.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d1ps2mssml7ahg"
 }
 
 model Session {
