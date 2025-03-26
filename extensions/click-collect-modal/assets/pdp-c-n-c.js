@@ -2,11 +2,11 @@ function setCookie(name,value,days){let expires="";if(days){let date=new Date();
 function getCookie(name){let cookies=document.cookie.split(";").map(cookie=>cookie.trim().split("="));for(let i=0;i<cookies.length;i++){if(cookies[i][0]===name){return decodeURIComponent(cookies[i][1]);}}return null;}
 async function fetchData(url) { try { let response = await fetch(url); if (!response.ok) throw new Error(`Failed to fetch data from ${url}`); return await response.json(); } catch (error) { console.error("Error: ", error); throw error;  }}
 async function getLocations(selectedLocation = "") { try {  
-        const pickuplcurl = `https://clickncollect-12d7088d53ee.herokuapp.com/api/pickupLocation?shop=${location.hostname}`;
+        const pickuplcurl = `https://click-n-collect-duplicate-ff6e8847a438.herokuapp.com/api/pickupLocation?shop=${location.hostname}`;
         const testres = await fetchData(pickuplcurl); 
         const locations = testres?.data?.locations?.nodes;  const destinationsArr = []; if (locations) { for (const location of locations) { if (location.address.zip && location?.localPickupSettingsV2 != null) {  destinationsArr.push(`${location.address.address1} ${location.address.city} ${location.address.zip} ${location.address.province} ${location.address.country}`);}}}
             if (destinationsArr.length > 0) { const customerLocation = getCookie("customerlocation"); document.querySelector(".location").value = customerLocation;
-              const mapUrl = `https://clickncollect-12d7088d53ee.herokuapp.com/api/distance?customerlocation=${customerLocation}&shop=${location.hostname}`;
+              const mapUrl = `https://click-n-collect-duplicate-ff6e8847a438.herokuapp.com/api/distance?customerlocation=${customerLocation}&shop=${location.hostname}`;
               const res = await fetchData(mapUrl);
               if (res) { const sortedLocations = []; var count = 0; 
                   for (const location of locations) { if (location.address.zip && location?.localPickupSettingsV2 != null) {  const zipcode= location.address.zip; 
@@ -22,14 +22,19 @@ async function getLocations(selectedLocation = "") { try {
   } 
 async function getInventoryLocations(callback) {
   let productId = document.querySelector('.inventory-details').dataset.productid;
-  try { let response = await fetch(`https://clickncollect-12d7088d53ee.herokuapp.com/api/cart?product_id=${productId}&shop=${location.hostname}`); 
+  try { let response = await fetch(`https://click-n-collect-duplicate-ff6e8847a438.herokuapp.com/api/cart?product_id=${productId}&shop=${location.hostname}`); 
     if (!response.ok) throw new Error(`Request failed with status ${response.status}`);
     let data = await response.json(); callback(null, data.data);
   } catch (error) {console.error("Error fetching inventory locations:", error); callback(error, null);}
 }
 async function handleInventoryLocationsResponse(data) { console.log('data ',data)
-   var quantityres = data?.quantity; let storeLocationName = getCookie("storelocationName");  let productVariantId = document.querySelector(".product-form .product-variant-id").value;
-  for (let i = 0; i < data.product.variants.nodes.length; i++) { let variant = data.product.variants.nodes[i]; let variantIdParts = variant.id.split("/");  let variantId = variantIdParts[variantIdParts.length - 1];
+   var quantityres = data?.quantity; let storeLocationName = getCookie("storelocationName"); 
+ try{
+   let productVariantId = document.querySelector(".product-form .product-variant-id").value;
+ }catch{
+    let productVariantId = document.querySelector(".product-form [name='id']").value;
+ } 
+    for (let i = 0; i < data.product.variants.nodes.length; i++) { let variant = data.product.variants.nodes[i]; let variantIdParts = variant.id.split("/");  let variantId = variantIdParts[variantIdParts.length - 1];
     if (variantId === productVariantId) { let isInStock = false;  if (variant.inventoryItem && variant.inventoryItem.inventoryLevels) { for (let j = 0; j < variant.inventoryItem.inventoryLevels.edges.length; j++) {  let inventoryLevel = variant.inventoryItem.inventoryLevels.edges[j].node;
           if (inventoryLevel.location.name === storeLocationName) { let quantity = inventoryLevel.quantities[0].quantity; isInStock = quantity > quantityres; }
         } } let inventoryStatusElement = document.querySelector(".inventory_status"); let stockElement = document.querySelector(".inventory_status .stock"); if (isInStock) { inventoryStatusElement.classList.add("in-stock"); inventoryStatusElement.classList.remove("out-stock"); stockElement.textContent = "In-stock"; } else { inventoryStatusElement.classList.add("out-stock"); inventoryStatusElement.classList.remove("in-stock"); stockElement.textContent = "Out of Stock"; }  document.querySelector(".inventory-details .broadway .dropdown b").textContent = storeLocationName; }

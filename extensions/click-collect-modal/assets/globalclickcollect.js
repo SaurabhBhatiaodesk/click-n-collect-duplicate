@@ -4,14 +4,14 @@ async function getLocations(selectedLocation = "") {
     try { document.querySelector('.cnc-checkload').classList.add('loader');
         document.querySelector(".popup-box .address-popup").style.display = "none";
         document.querySelector(".popup-box button.setlocationbtn.popup-btn").style.display = "none";
-        const pickuplcurl = `https://clickncollect-12d7088d53ee.herokuapp.com/api/pickupLocation?shop=${location.hostname}`;
+        const pickuplcurl = `https://click-n-collect-duplicate-ff6e8847a438.herokuapp.com/api/pickupLocation?shop=${location.hostname}`;
         const testres = await fetchData(pickuplcurl);
         const locations = testres?.data?.locations?.nodes;
         const destinationsArr = []; if (locations) { for (const location of locations) { if (location.address.zip && location?.localPickupSettingsV2 != null) { destinationsArr.push(`${location.address.address1} ${location.address.city} ${location.address.zip} ${location.address.province} ${location.address.country}`); } } }
         if (destinationsArr.length > 0) {
             const customerLocation = getCookie("customerlocation");
             document.querySelector(".location").value = customerLocation;
-            let mapUrl = `https://clickncollect-12d7088d53ee.herokuapp.com/api/distance?customerlocation=${customerLocation}&shop=${location.hostname}`;
+            let mapUrl = `https://click-n-collect-duplicate-ff6e8847a438.herokuapp.com/api/distance?customerlocation=${customerLocation}&shop=${location.hostname}`;
             const res = await fetchData(mapUrl); var count = 0;
             if (res) {
                 const sortedLocations = [];
@@ -87,7 +87,7 @@ if (document.querySelector(".popup-modal") && !window.location.pathname.includes
         });
     }); if (getCookie("storelocationName")) { } else { showModal(); }
 }
-async function getUserLocation() { const accessToken = '7a1891347cf4af'; try { const response = await fetch(`https://ipinfo.io/json?token=${accessToken}`);
+async function getUserLocation() { const accessToken = '4d300188130ddc'; try { const response = await fetch(`https://ipinfo.io/json?token=${accessToken}`);
         const data = await response.json(); if (getCookie("customerlocation")) {
             if (document.querySelector('.check-btn input.location').value == "") { document.querySelector('.check-btn input.location').value = data.postal; }
         } else {setCookie("customerlocation", data.postal);

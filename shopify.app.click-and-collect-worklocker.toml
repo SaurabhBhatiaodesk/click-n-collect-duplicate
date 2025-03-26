@@ -1,0 +1,32 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "12a74f78e1e2d3a8049a9b3fd932cda4"
+name = "Click and Collect- worklocker"
+handle = "worklocker"
+application_url = "https://click-n-collect-duplicate-ff6e8847a438.herokuapp.com/"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = false
+dev_store_url = "dropshipping-360.myshopify.com"
+include_config_on_deploy = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_inventory,read_locales,read_locations,read_product_listings,read_products,read_publications,read_script_tags,write_content,write_inventory,write_locations,write_products,write_publications,write_script_tags,write_shipping"
+
+[auth]
+redirect_urls = [
+  "https://click-n-collect-duplicate-ff6e8847a438.herokuapp.com/auth/callback",
+  "https://click-n-collect-duplicate-ff6e8847a438.herokuapp.com/auth/shopify/callback",
+  "https://click-n-collect-duplicate-ff6e8847a438.herokuapp.com/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2025-01"
+
+[pos]
+embedded = false
+
+[app_preferences]
+url = "https://click-n-collect-duplicate-ff6e8847a438.herokuapp.com/"
